@@ -41,7 +41,7 @@ const BANCO_LECCIONES = {
         <p><strong>¿Por qué es importante entender el hardware?</strong></p>
         <p>Comprender estos conceptos es fundamental, ya que todo lo que hagas en una computadora depende de la correcta interacción entre estos componentes. Si tu equipo funciona lento, por ejemplo, puede deberse a poca memoria RAM disponible; si tarda en encender, podría estar relacionado con el tipo de almacenamiento que utiliza. Entender el hardware te ayudará a diagnosticar problemas básicos y a tomar mejores decisiones al usar o adquirir un equipo de cómputo.</p>
       `,
-      videoSrc: 'videos/V_1_Fundamentos de Hardware y Software.mp4',
+      videoId: 'tB2liUhWdTU',
       videoTitulo: 'Fundamentos de Hardware y Software',
       preguntas: [
         { q: '¿Cuál de los siguientes es un componente de hardware?', opciones: ['Microsoft Word', 'Memoria RAM', 'Sistema operativo', 'Navegador web'], correcta: 1,
@@ -100,7 +100,7 @@ const BANCO_LECCIONES = {
         </ul>
         <p>Dominar estas prácticas de organización digital no solo facilita el trabajo escolar, sino que es una habilidad muy valorada en cualquier entorno laboral moderno.</p>
       `,
-      videoSrc: 'videos/V_2_Software vs Hardware Sistema Operativo.mp4',
+      videoId: 'We51nIN59PU',
       videoTitulo: 'Software vs Hardware: Sistema Operativo',
       preguntas: [
         { q: '¿Cuál es un ejemplo de software de aplicación?', opciones: ['Windows', 'Microsoft Excel', 'El procesador (CPU)', 'El disco duro'], correcta: 1,
@@ -148,7 +148,7 @@ const BANCO_LECCIONES = {
         <p><strong>Configuración de página</strong></p>
         <p>Antes de comenzar a escribir un documento formal, es recomendable configurar aspectos como: el tamaño de papel (generalmente carta o A4), los márgenes (el espacio en blanco alrededor del contenido) y la orientación de la página (vertical u horizontal), ya que estos elementos afectan directamente la presentación final del documento al momento de imprimirlo o compartirlo.</p>
       `,
-      videoSrc: 'videos/V_3_Procesador de Texto Conceptos Basicos.mp4',
+      videoId: 'BVyrVvrKAKs',
       videoTitulo: 'Procesador de Texto: Conceptos Básicos',
       preguntas: [
         { q: '¿Qué herramienta se usa para cambiar el tipo de letra?', opciones: ['Fuente', 'Tabla', 'Hipervínculo', 'Numeración'], correcta: 0,
@@ -194,7 +194,7 @@ const BANCO_LECCIONES = {
         <p><strong>Aplicaciones prácticas</strong></p>
         <p>Las hojas de cálculo se utilizan en innumerables situaciones cotidianas y profesionales: control de gastos personales o familiares, registro de calificaciones escolares, inventarios de productos en un negocio, cálculo de presupuestos y planificación financiera, entre muchas otras aplicaciones.</p>
       `,
-      videoSrc: 'videos/V_4_Hojas de Calculo Formulas Basicas.mp4',
+      videoId: 'MIKvBHjfMs4',
       videoTitulo: 'Hojas de Cálculo: Fórmulas Básicas',
       preguntas: [
         { q: '¿Qué función suma un rango de celdas?', opciones: ['=PROMEDIO()', '=SUMA()', '=MAX()', '=CONTAR()'], correcta: 1,
@@ -240,7 +240,7 @@ const BANCO_LECCIONES = {
         <p><strong>Técnicas de exposición oral</strong></p>
         <p>Una buena presentación digital debe ir acompañada de una exposición oral efectiva: mantener contacto visual con la audiencia, hablar con un volumen y ritmo adecuados, evitar leer directamente las diapositivas palabra por palabra, y practicar previamente para controlar el tiempo de exposición disponible.</p>
       `,
-      videoSrc: 'videos/V_5_Diseno de Presentaciones Efectivas.mp4',
+      videoId: 'P0CUU_IEnt8',
       videoTitulo: 'Diseño de Presentaciones Efectivas',
       preguntas: [
         { q: 'Una buena práctica de diseño en diapositivas es:', opciones: ['Usar mucho texto por diapositiva', 'Usar contraste claro entre texto y fondo', 'Usar muchos tipos de letra', 'Evitar imágenes'], correcta: 1,
@@ -284,7 +284,7 @@ const BANCO_LECCIONES = {
         </ul>
         <p>Es importante configurar adecuadamente las opciones de privacidad de cada red social, limitando quién puede ver la información personal publicada, y mantener siempre una actitud crítica frente al contenido que se recibe y comparte.</p>
       `,
-      videoSrc: 'videos/V_6_Uso Seguro de Internet .mp4',
+      videoId: 'cfJtnw-y5sU',
       videoTitulo: 'Uso Seguro de Internet y Correo Electrónico',
       preguntas: [
         { q: '¿Qué símbolo identifica una dirección de correo electrónico?', opciones: ['#', '@', '%', '&'], correcta: 1,
@@ -332,7 +332,7 @@ const BANCO_LECCIONES = {
         <p><strong>¿Qué hacer ante un mensaje sospechoso?</strong></p>
         <p>Si recibes un correo, mensaje o llamada sospechosa pidiendo información personal, lo correcto es: no hacer clic en enlaces desconocidos, no descargar archivos adjuntos de remitentes no verificados, y reportar el mensaje como sospechoso a la plataforma correspondiente o a la institución que supuestamente lo envió, comunicándote directamente por sus canales oficiales.</p>
       `,
-      videoSrc: 'videos/V_7_Seguridad Digital.mp4',
+      videoId: 'BL9G20pnPjM',
       videoTitulo: 'Seguridad Digital: Phishing y Contraseñas Seguras',
       preguntas: [
         { q: '¿Qué es el phishing?', opciones: ['Un tipo de hardware', 'Un intento de engaño para robar datos', 'Un lenguaje de programación', 'Un navegador web'], correcta: 1,
@@ -375,7 +375,7 @@ const BANCO_LECCIONES = {
         <p><strong>Reflexión final</strong></p>
         <p>Completar este proyecto integrador no es solo un requisito académico, sino una oportunidad real de demostrar el crecimiento en competencias digitales adquirido a lo largo de los tres años del programa de Informática. Estas habilidades —manejo de hardware y software, ofimática, búsqueda crítica de información y seguridad digital— son herramientas que te acompañarán mucho más allá del aula, en tu vida laboral y personal.</p>
       `,
-      videoSrc: 'videos/V_8_Estructura de un proyecto.mp4',
+      videoId: 'LuTyJDI4hko',
       videoTitulo: 'Cómo Estructurar tu Proyecto Final',
       preguntas: [
         { q: '¿Qué combina un proyecto integrador de Informática?', opciones: ['Solo hardware', 'Herramientas ofimáticas y buenas prácticas digitales', 'Solo seguridad', 'Solo presentaciones'], correcta: 1,
