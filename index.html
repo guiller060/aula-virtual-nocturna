@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Aula Virtual Escuela Nocturna</title>
+<meta name="theme-color" content="#1565C0">
+<meta name="description" content="Aula Virtual de la Escuela Secundaria Nocturna Oficial de Changuinola">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231565C0'/%3E%3Ctext x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='sans-serif'%3E🏫%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --blanco:#FFFFFF; --azul:#1565C0; --azul-oscuro:#0D3C7A; --azul-claro:#E6F1FB;
+    --rojo:#C62828; --rojo-claro:#FBE3E3; --verde:#2E7D32; --verde-claro:#E2F0E3;
+    --negro:#111111; --gris:#757575; --gris-claro:#E0E0E0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body{
+    font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: url('img-fondo.png') center/cover fixed no-repeat;
+    color: var(--negro);
+    min-height: 100vh; display: flex; flex-direction: column; align-items: center; 
+    padding: 12px 12px 0 12px;
+  }
+  .app-container {
+    width: 100%; max-width: 520px; 
+    background: white; border-radius: 28px 28px 20px 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08); 
+    padding: 20px 20px 0 20px;
+    margin-bottom: 12px;
+    flex: 1;
+  }
+  .pantalla { display: none; width: 100%; }
+  .pantalla.activa { display: block; }
+
+  .banner-instalar {
+    display: none; background: var(--azul-oscuro); color: #fff; border-radius: 12px;
+    padding: 12px 14px; margin-bottom: 14px; align-items: center; gap: 10px; font-size: 12.5px;
+  }
+  .banner-instalar.mostrar { display: flex; }
+  .banner-instalar button {
+    margin-left: auto; background: #fff; color: var(--azul-oscuro); border: none;
+    border-radius: 8px; padding: 8px 12px; font-weight: 700; font-size: 12px; cursor: pointer;
+  }
+  .banner-offline {
+    display: none; background: var(--rojo-claro); color: #7F0000; border-radius: 10px;
+    padding: 8px 12px; margin-bottom: 12px; font-size: 12px; font-weight: 600; text-align: center;
+  }
+  .banner-offline.mostrar { display: block; }
+
+  #pantalla-login { text-align: center; padding: 8px 4px 10px; }
+  .logo-escudo { 
+    width: 92px; height: 92px; margin: 0 auto 10px; display: block; 
+    background: var(--azul-claro); border-radius: 50%; padding: 6px;
+    font-size: 56px; line-height: 1.4; 
+  }
+  .nombre-app { font-size: 21px; font-weight: 800; color: var(--azul-oscuro); line-height: 1.25; margin-bottom: 2px; }
+  .nombre-escuela { font-size: 12px; color: var(--gris); margin-bottom: 4px; }
+  .subtitulo { color: var(--negro); font-size: 13px; margin-bottom: 22px; line-height: 1.5; font-weight: 600; }
+  .campo {
+    width: 100%; padding: 14px 16px; border: 2px solid var(--gris-claro);
+    border-radius: 12px; font-size: 15px; margin-bottom: 12px; font-family: inherit;
+  }
+  .campo:focus { outline: none; border-color: var(--azul); }
+  select.campo { color: var(--negro); background: var(--blanco); }
+  .login-tabs { display: flex; gap: 8px; margin-bottom: 18px; background: var(--gris-claro); border-radius: 12px; padding: 4px; }
+  .login-tab { flex: 1; padding: 10px; border: none; background: transparent; border-radius: 9px; font-size: 13px; font-weight: 700; color: var(--gris); cursor: pointer; }
+  .login-tab.activo { background: var(--azul); color: #fff; }
+  .campos-registro { display: none; }
+  .campos-registro.mostrar { display: block; }
+  .nota-cedula { font-size: 11.5px; color: var(--gris); text-align: left; margin: -6px 0 14px 4px; }
+  .error-login { display: none; background: var(--rojo-claro); color: #7F0000; border-radius: 10px; padding: 10px 12px; font-size: 12.5px; margin-bottom: 12px; text-align: left; font-weight: 600; }
+  .error-login.mostrar { display: block; }
+
+  #pantalla-bienvenida { text-align: center; padding: 40px 16px; }
+  .bienvenida-icono { font-size: 56px; margin-bottom: 14px; }
+  .bienvenida-titulo { font-size: 24px; font-weight: 800; color: var(--azul-oscuro); margin-bottom: 8px; }
+  .bienvenida-sub { font-size: 14px; color: var(--gris); margin-bottom: 28px; line-height: 1.5; }
+
+  #pantalla-mapa { padding-bottom: 10px; }
+  .mapa-saludo { padding: 6px 4px 14px; }
+  .mapa-saludo-nombre { font-size: 18px; font-weight: 800; color: var(--azul-oscuro); }
+  .mapa-saludo-msg { font-size: 13px; color: var(--gris); margin-top: 2px; }
+  .mapa-header {
+    background: var(--azul); color: var(--blanco); padding: 14px 18px;
+    border-radius: 16px 16px 0 0; display: flex; justify-content: space-between; align-items: center;
+  }
+  .mapa-header .anio { font-weight: 700; font-size: 15px; }
+  .mapa-stats { display: flex; gap: 14px; }
+  .mapa-stat { display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; }
+  .mapa-avance-track { height: 7px; background: var(--gris-claro); }
+  .mapa-avance-fill { height: 100%; background: var(--verde); transition: width .4s; }
+  .unidad-card {
+    border: 2px solid var(--gris-claro); border-left: none; border-right: none;
+    padding: 14px 18px; display: flex; align-items: center; gap: 14px;
+    cursor: pointer; transition: background .15s;
+  }
+  .unidad-card:hover { background: var(--azul-claro); }
+  .unidad-card.bloqueada { opacity: .45; cursor: not-allowed; }
+  .unidad-card.bloqueada:hover { background: var(--blanco); }
+  .unidad-icono {
+    width: 42px; height: 42px; border-radius: 50%; background: var(--azul-claro); color: var(--azul);
+    display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 17px; flex-shrink: 0;
+  }
+  .unidad-card.completa .unidad-icono { background: var(--verde-claro); color: var(--verde); }
+  .unidad-info { flex: 1; }
+  .unidad-titulo { font-weight: 600; font-size: 14.5px; margin-bottom: 2px; }
+  .unidad-desc { font-size: 11.5px; color: var(--gris); }
+  .unidad-check { color: var(--verde); font-size: 18px; font-weight: 700; }
+  .mapa-footer-acciones { display: flex; gap: 8px; padding: 14px 4px 0; border: 2px solid var(--gris-claro); border-top: none; border-radius: 0 0 16px 16px; }
+  .btn-secundario {
+    flex: 1; padding: 11px; border: 2px solid var(--gris-claro); border-radius: 10px; background: #fff;
+    font-size: 12px; font-weight: 700; color: var(--gris); cursor: pointer; margin: 0 10px 14px;
+  }
+
+  #pantalla-leccion { width: 100%; max-width: 520px; }
+  .leccion-top {
+    background: var(--azul); color: var(--blanco); padding: 14px 18px;
+    border-radius: 16px 16px 0 0; display: flex; align-items: center; justify-content: space-between;
+  }
+  .btn-cerrar { background: none; border: none; color: var(--blanco); font-size: 20px; cursor: pointer; padding: 0 8px; }
+  .leccion-titulo-top { font-weight: 700; font-size: 13.5px; }
+  .leccion-stats { display: flex; gap: 14px; }
+  .leccion-stat { display: flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; }
+  .vidas-rojo { color: #FFD9D9; }
+  .pasos-indicador {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 12px 18px 4px; border: 2px solid var(--gris-claro); border-top: none; border-bottom: none;
+  }
+  .paso-item { display: flex; align-items: center; gap: 6px; flex: 1; }
+  .paso-circulo {
+    width: 26px; height: 26px; border-radius: 50%; background: var(--gris-claro); color: var(--gris);
+    display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0;
+  }
+  .paso-circulo.activo { background: var(--azul); color: var(--blanco); }
+  .paso-circulo.hecho { background: var(--verde); color: var(--blanco); }
+  .paso-linea { flex: 1; height: 3px; background: var(--gris-claro); }
+  .paso-linea.hecho { background: var(--verde); }
+  .paso-labels { display:flex; justify-content:space-between; padding: 0 18px 10px; border:2px solid var(--gris-claro); border-top:none; border-bottom:none; }
+  .paso-label { font-size: 9.5px; color: var(--gris); flex:1; }
+  .paso-label.l1 { text-align:left; } .paso-label.l2 { text-align:center; } .paso-label.l3 { text-align:right; }
+  .paso-label.activo-label { color: var(--azul); font-weight: 700; }
+  .barra-track { height: 7px; background: var(--gris-claro); margin: 0; }
+  .barra-fill { height: 100%; background: var(--verde); transition: width .4s ease; width: 0%; }
+  .leccion-cuerpo { background: var(--blanco); border: 2px solid var(--gris-claro); border-top: none; padding: 24px 20px; }
+
+  .lectura-titulo { font-size: 18px; font-weight: 700; color: var(--azul-oscuro); margin-bottom: 12px; }
+  .lectura-scroll { max-height: 340px; overflow-y: auto; border: 2px solid var(--gris-claro); border-radius: 12px; padding: 14px; }
+  .lectura-scroll p { font-size: 13.8px; line-height: 1.65; margin-bottom: 12px; }
+  .lectura-scroll ul { margin: 0 0 12px 18px; }
+  .lectura-scroll li { font-size: 13.8px; line-height: 1.65; margin-bottom: 5px; }
+  .lectura-scroll strong { color: var(--azul-oscuro); }
+  .lectura-fin-marcador { text-align: center; padding: 8px 0 0; font-size: 11px; color: var(--gris); }
+  .aviso-scroll { display: flex; align-items: center; gap: 8px; background: var(--azul-claro); color: var(--azul-oscuro); border-radius: 10px; padding: 9px 12px; font-size: 12px; margin-top: 8px; font-weight: 600; }
+  .aviso-scroll.completo { background: var(--verde-claro); color: #1B5E20; }
+  .barra-lectura-track { height: 5px; background: var(--gris-claro); border-radius: 3px; margin-top: 8px; overflow: hidden; }
+  .barra-lectura-fill { height: 100%; background: var(--azul); width: 0%; transition: width .15s linear; }
+
+  .video-titulo { font-size: 16px; font-weight: 700; color: var(--azul-oscuro); margin-bottom: 10px; }
+  .video-wrapper { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; background: var(--negro); margin-bottom: 10px; }
+  .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+  .video-wrapper video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 12px; }
+  .video-offline-aviso { display: none; background: var(--gris-claro); color: var(--gris); border-radius: 10px; padding: 30px 16px; text-align: center; font-size: 12.5px; }
+  .video-nota { font-size: 12px; color: var(--gris); line-height: 1.5; }
+
+  .pregunta-texto { font-size: 16.5px; font-weight: 600; margin-bottom: 18px; line-height: 1.4; }
+  .opcion { display: block; width: 100%; text-align: left; background: var(--blanco); border: 2px solid var(--gris-claro); border-radius: 12px; padding: 15px 18px; margin-bottom: 10px; font-size: 15px; cursor: pointer; font-family: inherit; transition: all .15s; position: relative; color: var(--negro); }
+  .opcion:hover:not(.bloqueada) { border-color: var(--azul); background: var(--azul-claro); }
+  .opcion.seleccionada { border-color: var(--azul); background: var(--azul-claro); }
+  .opcion.correcta { background: var(--verde-claro); border-color: var(--verde); color: #1B5E20; font-weight: 600; }
+  .opcion.incorrecta { background: var(--rojo-claro); border-color: var(--rojo); color: #7F0000; font-weight: 600; }
+  .opcion.bloqueada { cursor: default; }
+  .opcion .marca { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); font-weight: 700; font-size: 15px; }
+  .retroalimentacion { display: none; border-radius: 12px; padding: 13px 15px; margin-top: 6px; font-size: 12.5px; line-height: 1.5; }
+  .retroalimentacion.mostrar { display: block; }
+  .retroalimentacion.correcta-fb { background: var(--verde-claro); color: #1B5E20; }
+  .retroalimentacion.incorrecta-fb { background: var(--rojo-claro); color: #7F0000; }
+  .retroalimentacion b { display: block; font-size: 13px; margin-bottom: 3px; }
+
+  .leccion-footer { border: 2px solid var(--gris-claro); border-top: none; border-radius: 0 0 16px 16px; padding: 14px 18px; }
+  .btn-principal { width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit; background: var(--azul); color: var(--blanco); text-transform: uppercase; letter-spacing: .03em; }
+  .btn-principal:disabled { background: var(--gris-claro); color: var(--gris); cursor: not-allowed; }
+  .btn-principal.continuar { background: var(--verde); }
+
+  #pantalla-resultado { text-align: center; }
+  .resultado-card { border: 2px solid var(--gris-claro); border-radius: 16px; padding: 36px 22px; }
+  .resultado-icono { font-size: 44px; margin-bottom: 10px; }
+  .resultado-pct { font-size: 44px; font-weight: 800; color: var(--verde); margin: 6px 0; }
+  .resultado-label { color: var(--gris); font-size: 13.5px; margin-bottom: 22px; }
+  .resultado-grid { display: flex; justify-content: center; gap: 22px; margin-bottom: 24px; }
+  .resultado-item { display: flex; flex-direction: column; align-items: center; }
+  .resultado-num { font-size: 22px; font-weight: 700; }
+  .resultado-num.ok { color: var(--verde); } .resultado-num.bad { color: var(--rojo); }
+  .resultado-item-label { font-size: 11px; color: var(--gris); margin-top: 2px; }
+  .game-over .resultado-pct { color: var(--rojo); }
+
+  #pantalla-docente { padding-bottom: 10px; }
+  .docente-header { background: var(--negro); color: #fff; padding: 16px 18px; border-radius: 16px 16px 0 0; display: flex; justify-content: space-between; align-items: center; }
+  .docente-header .titulo { font-weight: 700; font-size: 15px; }
+  .docente-lista { border: 2px solid var(--gris-claro); border-top: none; max-height: 460px; overflow-y: auto; }
+  .docente-fila { padding: 13px 16px; border-bottom: 1px solid var(--gris-claro); }
+  .docente-fila:last-child { border-bottom: none; }
+  .docente-fila-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .docente-nombre { font-weight: 700; font-size: 13.5px; }
+  .docente-cedula { font-size: 11px; color: var(--gris); }
+  .docente-anio-badge { font-size: 10px; font-weight: 700; background: var(--azul-claro); color: var(--azul-oscuro); padding: 3px 8px; border-radius: 8px; }
+  .docente-barra-track { height: 6px; background: var(--gris-claro); border-radius: 4px; overflow: hidden; margin: 6px 0 4px; }
+  .docente-barra-fill { height: 100%; background: var(--verde); }
+  .docente-fila-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--gris); }
+  .docente-footer { border: 2px solid var(--gris-claro); border-top: none; border-radius: 0 0 16px 16px; padding: 14px 16px; }
+  .docente-vacio { padding: 40px 20px; text-align: center; color: var(--gris); font-size: 13px; }
+
+  .oculto { display: none !important; }
+
+  .credito-franja {
+    width: 100%; max-width: 520px; 
+    background: #0D3C7A;
+    color: white; 
+    text-align: center; 
+    padding: 10px 14px; 
+    border-radius: 20px 20px 0 0; 
+    font-size: 10.5px; 
+    font-weight: 500;
+    line-height: 1.5;
+    margin-top: 4px;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.05);
+    letter-spacing: 0.2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .credito-franja strong { color: #B3D9FF; }
+  .credito-franja .logos {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .credito-franja .logos img {
+    height: 24px;
+    width: auto;
+    display: inline-block;
+    filter: brightness(0) invert(1);
+  }
+  .credito-franja .texto {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 3px 6px;
+  }
+</style>
+</head>
+<body>
+<div class="app-container">
+  <div class="pantalla activa" id="pantalla-login">
+    <div class="banner-offline" id="banner-offline"> Estás sin conexión — El Aula Virtual funciona normalmente sin conexión</div>
+    <div class="banner-instalar" id="banner-instalar">
+       Instala el Aula Virtual en tu dispositivo para usarla sin internet
+      <button onclick="instalarApp()">Instalar</button>
+    </div>
+
+    <div class="logo-escudo">🏫</div>
+    <div class="nombre-app">Aula Virtual<br>Escuela Nocturna</div>
+    <div class="nombre-escuela">Escuela Secundaria Nocturna Oficial de Changuinola</div>
+    <p class="subtitulo">Bienvenidos al Aula Virtual de la Escuela Secundaria Nocturna Oficial</p>
+
+    <div class="login-tabs">
+      <button class="login-tab activo" id="tab-ingresar" onclick="cambiarTabLogin('ingresar')">Ya tengo cuenta</button>
+      <button class="login-tab" id="tab-registrar" onclick="cambiarTabLogin('registrar')">Soy nuevo</button>
+    </div>
+
+    <div class="error-login" id="error-login"></div>
+
+    <input type="text" class="campo" id="input-cedula" placeholder="Número de cédula (ej: 8-123-4567)" inputmode="text">
+
+    <div class="campos-registro" id="campos-registro">
+      <input type="text" class="campo" id="input-nombre" placeholder="Nombre completo">
+      <select class="campo" id="input-anio">
+        <option value="4">4to año</option>
+        <option value="5">5to año</option>
+        <option value="6">6to año</option>
+      </select>
+      <p class="nota-cedula">Tu cédula será tu identificación única en el Aula Virtual. La próxima vez, solo ingrésala para que la app te reconozca automáticamente.</p>
+    </div>
+
+    <button class="btn-principal" id="btn-entrar" onclick="procesarLogin()">Ingresar</button>
+  </div>
+
+  <div class="pantalla" id="pantalla-bienvenida">
+    <div class="bienvenida-icono">👋</div>
+    <div class="bienvenida-titulo" id="bienvenida-titulo">Hola</div>
+    <div class="bienvenida-sub" id="bienvenida-sub">Listo para continuar tu aprendizaje</div>
+    <button class="btn-principal" onclick="irAlMapa()">Comenzar</button>
+  </div>
+
+  <div class="pantalla" id="pantalla-mapa">
+    <div class="mapa-saludo">
+      <div class="mapa-saludo-nombre" id="saludo-nombre">Hola</div>
+      <div class="mapa-saludo-msg" id="saludo-msg">Continúa tu aprendizaje</div>
+    </div>
+    <div class="mapa-header">
+      <span class="anio" id="mapa-anio-label">4to año</span>
+      <div class="mapa-stats">
+        <span class="mapa-stat"> <span id="mapa-racha">0</span></span>
+        <span class="mapa-stat"> <span id="mapa-xp">0</span></span>
+      </div>
+    </div>
+    <div class="mapa-avance-track"><div class="mapa-avance-fill" id="mapa-avance-fill" style="width:0%"></div></div>
+    <div id="lista-unidades"></div>
+    <div class="mapa-footer-acciones">
+      <button class="btn-secundario" onclick="abrirPanelDocente()"> Panel docente</button>
+      <button class="btn-secundario" onclick="cerrarSesionUsuario()">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <div class="pantalla" id="pantalla-leccion">
+    <div class="leccion-top">
+      <button class="btn-cerrar" onclick="salirLeccion()">&times;</button>
+      <span class="leccion-titulo-top" id="leccion-titulo-top"></span>
+      <div class="leccion-stats">
+        <span class="leccion-stat vidas-rojo"> <span id="leccion-vidas">3</span></span>
+        <span class="leccion-stat"> <span id="leccion-xp">0</span></span>
+      </div>
+    </div>
+    <div class="pasos-indicador">
+      <div class="paso-item"><div class="paso-circulo" id="circulo-1">1</div><div class="paso-linea" id="linea-1"></div></div>
+      <div class="paso-item"><div class="paso-circulo" id="circulo-2">2</div><div class="paso-linea" id="linea-2"></div></div>
+      <div class="paso-item" style="flex:0"><div class="paso-circulo" id="circulo-3">3</div></div>
+    </div>
+    <div class="paso-labels">
+      <span class="paso-label l1" id="label-1">Leer</span>
+      <span class="paso-label l2" id="label-2">Video</span>
+      <span class="paso-label l3" id="label-3">Practicar</span>
+    </div>
+    <div class="barra-track"><div class="barra-fill" id="leccion-barra"></div></div>
+    <div class="leccion-cuerpo" id="leccion-cuerpo"></div>
+    <div class="leccion-footer"><button class="btn-principal" id="btn-accion" disabled>Comprobar</button></div>
+  </div>
+
+  <div class="pantalla" id="pantalla-resultado">
+    <div class="resultado-card" id="resultado-card">
+      <div class="resultado-icono"> </div>
+      <div class="resultado-pct" id="resultado-pct">0%</div>
+      <div class="resultado-label" id="resultado-label">Lección completada</div>
+      <div class="resultado-grid">
+        <div class="resultado-item"><span class="resultado-num ok" id="resultado-correctas">0</span><span class="resultado-item-label">Correctas</span></div>
+        <div class="resultado-item"><span class="resultado-num bad" id="resultado-incorrectas">0</span><span class="resultado-item-label">Incorrectas</span></div>
+        <div class="resultado-item"><span class="resultado-num" id="resultado-xp">0</span><span class="resultado-item-label">XP ganado</span></div>
+      </div>
+      <button class="btn-principal continuar" onclick="volverAlMapa()">Continuar</button>
+    </div>
+  </div>
+
+  <div class="pantalla" id="pantalla-docente">
+    <div class="docente-header">
+      <span class="titulo"> Panel Docente</span>
+      <button class="btn-cerrar" onclick="volverAlMapa()">&times;</button>
+    </div>
+    <div class="docente-lista" id="docente-lista"></div>
+    <div class="docente-footer">
+      <button class="btn-secundario" style="margin:0;width:100%" onclick="volverAlMapa()">Volver</button>
+    </div>
+  </div>
+</div>
+
+<div class="credito-franja">
+  <span class="texto">
+    <strong>Creado y diseñado</strong> por Alfredo Bailey y Guillermo Gonzales — Universidad de Panamá — Facultad de Informática, Electrónica y Comunicación — Sede Bocas del Toro
+  </span>
+  <span class="logos">
+    <img src="logo-uni.png" alt="Universidad de Panamá">
+    <img src="logo-info.png" alt="Facultad de Informática, Electrónica y Comunicación">
+  </span>
+</div>
+
+<script src="identidad.js"></script>
+<script src="contenido.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
