@@ -251,7 +251,7 @@ function onScrollLectura(e){
   }
 }
 
-/* ---------- ETAPA 2: VIDEO LOCAL ---------- */
+/* ---------- ETAPA 2: VIDEO YOUTUBE ---------- */
 function renderEtapaVideo(){
   const leccion = estadoLeccion.leccionActual;
   const cuerpo = document.getElementById('leccion-cuerpo');
@@ -259,10 +259,9 @@ function renderEtapaVideo(){
   cuerpo.innerHTML = `
     <div class="video-titulo">🎬 ${leccion.videoTitulo || 'Video explicativo'}</div>
     <div class="video-wrapper">
-      <video controls controlsList="nodownload" style="width:100%;height:100%;border-radius:8px;background:#000;">
-        <source src="${leccion.videoSrc}" type="video/mp4">
-        Tu navegador no soporta la reproducción de video.
-      </video>
+      <iframe src="https://www.youtube.com/embed/${leccion.videoId}" title="Video de la lección"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
     </div>
     <p class="video-nota">Mira el video completo para reforzar lo aprendido en la lectura. Cuando estés listo, continúa a la práctica.</p>
   `;
